@@ -1,0 +1,117 @@
+﻿INSTITUTE OF ENGINEERING & MANAGEMENT KOLKATA
+DEPARTMENT OF COMPUTER SCIENCE
+COMPUTER NETWORKS LAB CS 692
+DATE : 21.02.2019
+01.  Write a program to implement CRC error detection method.
+
+
+Source Code : - 
+
+
+#include <stdio.h>
+#include <string.h>
+
+
+
+
+int main(){
+           int i,j,keylen,msglen;
+           char input[100], key[30],temp[30],quot[100],rem[30],key1[30];
+           printf("Enter datword to be sent : ");
+           scanf("%s",input);
+           printf("Enter Primary Key: ");
+           scanf("%s",key);
+           
+            printf("\n");
+           keylen=strlen(key);
+           msglen=strlen(input);
+           strcpy(key1,key);
+           for(i=0;i<keylen-1;i++){
+               input[msglen+i]='0';
+           }
+           
+           for (i=0;i<keylen;i++)
+               temp[i]=input[i];
+           for (i=0;i<msglen;i++) {
+                   quot[i]=temp[0];
+                   if(quot[i]=='0')
+                       for (j=0;j<keylen;j++)
+                               key[j]='0';
+                   else
+                           for(j=0;j<keylen;j++)
+                               key[j]=key1[j];
+                    for(j=keylen-1;j>0;j--){
+                           if(temp[j]==key[j])
+                             rem[j-1]='0';
+                           else
+                             rem[j-1]='1';
+                    }
+                    
+                    rem[keylen-1]=input[i+keylen];
+                    strcpy(temp,rem);
+            }
+            
+            strcpy(rem,temp);
+            
+            printf("Codeword sent is : ");
+            for (i=0;i<msglen;i++)
+             printf("%c",input[i]);
+            for (i=0;i<keylen-1;i++)
+             printf("%c",rem[i]);
+            
+            
+             //Checking Signal Part
+
+
+             printf("\n");
+             char received[100];
+             printf("Enter message received : ");
+             scanf("%s",received);
+            
+             printf("\n");
+            
+             for (i=0;i<keylen;i++)
+               temp[i]=received[i];
+             for (i=0;i<msglen;i++) {
+                   quot[i]=temp[0];
+                   if(quot[i]=='0')
+                       for (j=0;j<keylen;j++)
+                               key[j]='0';
+                   else
+                           for(j=0;j<keylen;j++)
+                               key[j]=key1[j];
+                    for(j=keylen-1;j>0;j--){
+                           if(temp[j]==key[j])
+                             rem[j-1]='0';
+                           else
+                             rem[j-1]='1';
+                    }
+                    
+                    rem[keylen-1]=received[i+keylen];
+                    strcpy(temp,rem);
+             }
+            
+             strcpy(rem,temp);
+             int flag = 0;
+             for (i=0;i<keylen-1;i++){
+                     if(rem[i] == '1')
+                         flag = 1;
+             }
+             if(flag == 0)
+                     printf("Correct Signal Received \n");
+             else
+                     printf("Incorrect Signal Received \n");
+
+
+            return 0;
+        }
+
+
+  
+Sample Output : - 
+
+
+  
+
+NAME :- SWAPNIL RAJ
+SEC. :- A  ROLL :- 09

@@ -1,0 +1,56 @@
+﻿INSTITUTE OF ENGINEERING AND MANAGEMENT KOLKATA
+DEPARTMENT OF COMPUTER SCIENCE 
+COMPUTER NETWORKS CS 692
+DATE  :- 07.02.2109
+ASSIGNMENT DAY 01
+
+
+01.  Write a code to implement 1D parity.
+Source Code :-
+
+
+#include<bits/stdc++.h>
+
+
+using namespace std;
+
+
+int main(){
+        string input;
+        cin>>input;
+    
+        int ones = 0;
+        for(auto i=0;i<input.length();i++){
+            if(input[i] == '1')
+                ones++;
+        }
+        if(ones%2 == 0)
+            input = input + to_string(0);
+        else
+            input = input + to_string(1);
+        
+        cout<<"Code Word : "<<input<<endl;
+    
+        cout<<"Enter Received Message : ";
+        ones = 0;
+        string output;
+        cin>>output;
+        for(auto i =0;i<output.length() - 1;i++){
+            if(output[i] == '1')
+                ones++;
+            
+        }
+        if(ones %2 == 0 && output[output.length()-1]=='0')
+            cout<<"Correct Signal Received\n";
+        else if(ones%2 != 0 && output[output.length()-1] == '1')
+            cout<<"Correct Signal Received\n";
+        else
+            cout<<"Incorrect Signal Received\n";
+}
+Sample Output :-
+  
+
+
+
+NAME : SWAPNIL RAJ
+SEC : A ROLL : 09

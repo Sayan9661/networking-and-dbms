@@ -1,0 +1,45 @@
+﻿INSTITUTE OF ENGINEERING AND MANAGEMENT KOLKATA
+DEPARTMENT OF COMPUTER SCIENCE
+COMPUTER NETWORKS CS 692
+DATE :- 28.03.2019
+
+
+Q. Implement Network Topologies.
+
+
+⇒
+1. Mesh
+
+
+  
+
+2. Star
+  
+
+
+
+3. Bus
+
+
+  
+
+
+
+4. Ring
+
+
+  
+
+
+
+
+
+5. Hybrid
+
+
+  
+
+
+
+Name :- Swapnil Raj
+Sec : A   Roll : 09

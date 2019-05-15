@@ -1,0 +1,332 @@
+﻿INSTITUTE OF ENGINEERING AND MANAGEMENT
+DEPARTMENT OF COMPUTER SCIENCE
+DBMS LAB CS691
+Date :- 01.04.2019
+1. Write a SQL query to fetch the count of employees working in project 'P1'.
+
+
+⇒
+SQL> select count(name) from empdet,empsal where empdet.empid = empsal.empid and
+ empsal.project = 'p1';
+
+
+COUNT(NAME)
+-----------
+              2
+
+
+2. Write a SQL query to fetch employee names having salary greater than or equal to 5000 and less than or equal 10000.
+
+
+⇒
+SQL> select empdet.empid, empdet.name, empsal.salary from empdet inner join emps
+al on empdet.empid = empsal.empid where empsal.salary >= 5000;
+
+
+         EMPID NAME               SALARY
+---------- ---------- ----------
+           121 John Snow            8000
+           421 Kuldeep             12000
+
+
+3. Write a SQL query to fetch project-wise count of employees sorted by project's count in descending order.
+
+
+⇒
+SQL> select project, count(project) from empsal group by project;
+
+
+PR COUNT(PROJECT)
+-- --------------
+p1                  2
+p2                  1
+
+
+
+
+4. Write a query to fetch employee names and salary records. Return employee details even if the salary record is not present for the employee.
+⇒
+
+
+SQL> select empdet.empid, empdet.name, empsal.salary from empdet full join empsa
+l on empdet.empid = empsal.empid;
+
+
+         EMPID NAME               SALARY
+---------- ---------- ----------
+           121 John Snow            8000
+           321 Walter               1000
+           421 Kuldeep             12000
+           423 Virat
+
+
+5. Write a SQL query to fetch all the Employees who are also managers from EmployeeDetails table.
+⇒
+
+
+SQL> select * from empdet;
+
+
+         EMPID NAME            MANAGERID DATEOFJOI
+---------- ---------- ---------- ---------
+           121 John Snow             321 31-JAN-14
+           321 Walter                986 30-JAN-15
+           421 Kuldeep               876 27-NOV-16
+           423 Virat                 276 27-MAR-16
+           276 Sachin                423 20-MAR-16
+
+
+
+
+SQL> select a.name from empdet a,empdet b where a.empid = b.managerid;
+
+
+NAME
+----------
+Walter
+Sachin
+Virat
+
+
+6.  Write a SQL query to fetch all employee records from EmployeeDetails table who have a salary record in EmployeeSalary table.
+⇒
+
+
+SQL> select empdet.empid, empdet.name, empsal.salary from empdet inner join emps
+al on empdet.empid = empsal.empid;
+
+
+         EMPID NAME               SALARY
+---------- ---------- ----------
+           121 John Snow            8000
+           321 Walter               1000
+           421 Kuldeep             12000
+
+
+
+
+7. Write a SQL query to fetch duplicate records from a table.
+⇒
+
+
+SQL> select * from empdet;
+
+
+         EMPID NAME            MANAGERID DATEOFJOI
+---------- ---------- ---------- ---------
+           121 John Snow             321 31-JAN-14
+           321 Walter                986 30-JAN-15
+           421 Kuldeep               876 27-NOV-16
+           423 Virat                 276 27-MAR-16
+           276 Sachin                423 20-MAR-16
+           276 Sachin                423 20-MAR-16
+
+
+
+
+SQL> select name, empid, count(empid) as "Count" from empdet group by name,empid
+ having count(empid) > 1;
+
+
+NAME                EMPID          Count
+---------- ---------- ----------
+Sachin                276              2
+
+
+
+
+8. Write a SQL query to remove duplicates from a table without using temporary table.
+
+
+⇒
+
+
+SQL> delete from empdet where rowid not in (select min(rowid) from empdet group
+by name);
+
+
+1 row deleted.
+
+
+SQL> select * from empdet;
+
+
+         EMPID NAME            MANAGERID DATEOFJOI
+---------- ---------- ---------- ---------
+           121 John Snow             321 31-JAN-14
+           321 Walter                986 30-JAN-15
+           421 Kuldeep               876 27-NOV-16
+           423 Virat                 276 27-MAR-16
+           276 Sachin                423 20-MAR-16
+
+
+9. Write a SQL query to fetch only odd rows from table.
+
+
+⇒
+
+
+SQL> select * from (select empid, name, rownum rn from empdet order by empid) wh
+ere mod(rn,2) <> 0;
+
+
+     EMPID NAME               RN
+---------- ---------- ----------
+       121 John Snow           1
+       421 Kuldeep             3
+       777 Dhoni               5
+
+
+10. Write a SQL query to fetch only even rows from table.
+⇒
+SQL> select * from (select empid, name, rownum rn from empdet order by empid) wh
+ere mod(rn,2) = 0;
+
+
+     EMPID NAME               RN
+---------- ---------- ----------
+       321 Walter              2
+       777 Dhoni               4
+
+
+11.  Write a SQL query to create a new table with data and structure copied from another table.
+
+
+⇒
+SQL> select * from empdet;
+
+
+     EMPID NAME        MANAGERID DATEOFJOI
+---------- ---------- ---------- ---------
+       121 John Snow         321 31-JAN-14
+       121 John Snow         321 31-JAN-14
+       421 Kuldeep           876 27-NOV-16
+
+
+SQL> create table duplicate as select * from empdet;
+
+
+Table created.
+
+
+SQL> select * from duplicate;
+
+
+     EMPID NAME        MANAGERID DATEOFJOI
+---------- ---------- ---------- ---------
+       121 John Snow         321 31-JAN-14
+       121 John Snow         321 31-JAN-14
+       421 Kuldeep           876 27-NOV-16
+
+
+12. Write a SQL query to create an empty table with same structure as some other table.
+⇒
+SQL> create table copy_schema as (select * from empdet where 1 = 2);
+
+
+Table created.
+
+
+SQL> select * from copy_schema;
+
+
+no rows selected
+
+
+SQL> desc copy_schema;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+
+
+ EMPID                                     NOT NULL NUMBER(3)
+ NAME                                               VARCHAR2(10)
+ MANAGERID                                          NUMBER(3)
+ DATEOFJOINING                                   DATE
+
+
+
+
+13. Write a SQL query to fetch common records between two tables.
+⇒
+SQL> select empdet.name, empdet.empid from empdet,duplicate where empdet.empid =
+ duplicate.empid and empdet.name = duplicate.name;
+
+
+NAME            EMPID
+---------- ----------
+John Snow         121
+Kuldeep           421
+
+
+
+
+14.  Write a SQL query to fetch records that are present in one table but not in another table.
+
+
+⇒
+SQL> select t1.name from empdet t1 left join duplicate t2 on t1.empid = t2.empid
+ where t2.name is null;
+
+
+NAME
+----------
+Raina
+
+
+
+
+15. Write a SQL query to find current date-time.
+
+
+⇒
+SQL> select to_char (sysdate, 'dd-mm-yyyy hh24:mi:ss' ) as "current time" from d
+ual;
+
+
+current time
+-------------------
+06-04-2019 13:28:28
+
+
+
+
+16. Write a SQL query to fetch all the Employees details from EmployeeDetails table who joined in Year 2016.
+⇒
+SQL> select empid,name from empdet where to_char(dateofjoining,'yyyy') = 2016;
+
+
+     EMPID NAME
+---------- ----------
+       421 Kuldeep
+
+
+
+
+17. Write a SQL query to fetch top n records.
+
+
+⇒
+SQL> select * from (select * from empdet order by empid asc) where rownum < 3;
+
+
+     EMPID NAME        MANAGERID DATEOFJOI
+---------- ---------- ---------- ---------
+       121 John Snow         321 31-JAN-14
+       233 Sachin            786 31-MAR-01
+
+
+18. Write SQL query to find the nth highest salary from table.
+⇒
+SQL> select * from (select * from emp order by sal desc) where rownum <= 3;
+
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM
+---------- ---------- --------- ---------- --------- ---------- ----------
+    DEPTNO
+----------
+      7839 KING       PRESIDENT            17-NOV-81       5000
+        10
+
+
+      7788 SCOTT      ANALYST         7566 09-DEC-82       3000
+        20

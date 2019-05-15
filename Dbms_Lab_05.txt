@@ -1,0 +1,90 @@
+﻿INSTITUTE OF ENGINEERING AND MANAGEMENT
+DEPARTMENT OF COMPUTER SCIENCE
+DBMS LAB CS691
+Date :- 08.04.2019
+01. Write a procedure using PL-SQL to find the student having highest marks.
+
+
+⇒
+SQL> select * from student;
+
+
+S_NAME             S_MARKS
+--------------- ----------
+Dhoni                  183
+Sachin                 210
+Rohit                  263
+Virat                  181
+
+
+
+
+SQL> create or replace procedure topper as
+  2  name student.s_name%type;
+  3  begin
+  4  select s_name into name from student where s_marks = (select max(s_marks) from     student);
+  5  dbms_output.put_line(name);
+  6  end;
+  7  /
+
+
+Procedure created.
+
+
+SQL> execute topper;
+Rohit
+
+
+PL/SQL procedure successfully completed.
+
+
+
+
+
+
+02. Write a function using PL-SQL to find the 2nd highest value in a column of a given table.
+
+
+⇒
+
+
+SQL> select * from student;
+
+
+S_NAME             S_MARKS
+--------------- ----------
+Dhoni                  183
+Sachin                 210
+Rohit                  263
+Virat                  181
+
+
+SQL> create or replace function secondmax
+  2  return number
+  3  is
+  4  n1 student.s_marks%type;
+  5  begin
+  6  select s_marks into n1 from 
+       (select s_name,s_marks,rownum rn from 
+         (select s_name,s_marks from student order by s_marks desc))
+       where rn = 2;
+  7  return n1;
+  8  end;
+  9  /
+
+
+Function created.
+
+
+SQL> set serveroutput on
+SQL> declare
+  2  n1 number(4);
+  3  begin
+  4  n1 := secondmax();
+  5  dbms_output.put_line(n1 || ' is the 2nd Maximum');
+  6  end;
+  7  /
+210 is the 2nd Maximum
+
+
+PL/SQL procedure successfully completed.
